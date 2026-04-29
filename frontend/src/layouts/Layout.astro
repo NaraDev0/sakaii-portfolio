@@ -1,0 +1,64 @@
+---
+import Footer from "../components/Footer.astro";
+import Navbar from "../components/Navbar.astro";
+import ScrollReveal from "../components/ScrollReveal.astro";
+import Terminal from "../components/Terminal.astro";
+import "../styles/global.css";
+
+const { about, lang = "fr", settings, t } = Astro.props;
+const siteUrl = `https://${settings.domain || "sakaii.org"}`;
+const currentUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const instagramHandle = about.instagram?.replace(/^@/, "") || "mikael_bch";
+const title = settings.site_title;
+const description = settings.site_description;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: about.name,
+  jobTitle: about.title,
+  url: siteUrl,
+  email: about.email,
+  sameAs: [`https://github.com/${about.github}`, `https://www.instagram.com/${instagramHandle}/`]
+};
+---
+
+<!doctype html>
+<html lang={lang} data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem("sakaii-theme");
+        const preferred = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        document.documentElement.dataset.theme = saved || preferred;
+      })();
+    </script>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="canonical" href={currentUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={currentUrl} />
+    <meta property="og:image" content={`${siteUrl}/favicon.svg`} />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <Navbar t={t} lang={lang} />
+    <main>
+      <slot />
+    </main>
+    <Footer t={t} />
+    <Terminal t={t} />
+    <ScrollReveal />
+  </body>
+</html>

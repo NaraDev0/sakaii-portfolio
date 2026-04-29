@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  directus:
+    image: directus/directus:latest
+    container_name: sakaii-directus
+    restart: unless-stopped
+    ports:
+      - "8055:8055"
+    volumes:
+      - ./directus/database:/directus/database
+      - ./directus/uploads:/directus/uploads
+      - ./directus/extensions:/directus/extensions
+    environment:
+      KEY: "${DIRECTUS_KEY}"
+      SECRET: "${DIRECTUS_SECRET}"
+      DB_CLIENT: "sqlite3"
+      DB_FILENAME: "/directus/database/data.db"
+      ADMIN_EMAIL: "${ADMIN_EMAIL}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+      PUBLIC_URL: "https://admin.sakaii.org"
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: "https://sakaii.org"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"fetch('http://127.0.0.1:8055/server/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  seed:
+    image: node:20-alpine
+    container_name: sakaii-seed
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      DIRECTUS_URL: "http://directus:8055"
+      ADMIN_EMAIL: "${ADMIN_EMAIL}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+    depends_on:
+      directus:
+        condition: service_healthy
+    command: ["node", "seed.mjs"]
+    restart: "no"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sakaii-frontend
+    restart: unless-stopped
+    ports:
+      - "4321:4321"
+    environment:
+      DIRECTUS_URL: "http://directus:8055"
+      PUBLIC_DIRECTUS_URL: "https://admin.sakaii.org"
+    depends_on:
+      seed:
+        condition: service_completed_successfully

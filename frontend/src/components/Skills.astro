@@ -1,0 +1,36 @@
+---
+import type { Skill } from "../lib/directus";
+
+const { skills, t } = Astro.props as { skills: Skill[]; t: any };
+const grouped = skills.reduce<Record<string, Skill[]>>((acc, skill) => {
+  acc[skill.category] = acc[skill.category] || [];
+  acc[skill.category].push(skill);
+  return acc;
+}, {});
+---
+
+<section class="section" id="skills" data-reveal>
+  <div class="container">
+    <p class="section-label">{t.sections.skills}</p>
+    <div class="skills-grid">
+      {Object.entries(grouped).map(([category, items]) => (
+        <article class="card skill-group">
+          <h3>{category}</h3>
+          <div class="skill-list">
+            {items.map((skill) => (
+              <div class="skill-row">
+                <header>
+                  <span>{skill.name}</span>
+                  <span>{skill.level}%</span>
+                </header>
+                <div class="skill-meter">
+                  <div class="skill-fill" data-skill-bar data-level={`${skill.level}%`}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

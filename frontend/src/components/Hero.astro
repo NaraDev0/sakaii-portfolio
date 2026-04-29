@@ -1,0 +1,19 @@
+---
+import { getAssetURL, type About } from "../lib/directus";
+
+const { about, t } = Astro.props as { about: About; t: any };
+const cvUrl = getAssetURL(about.cv) || "#contact";
+---
+
+<section class="hero" id="top">
+  <div class="container hero-content">
+    <p class="eyebrow">{t.hero.tagline}</p>
+    <h1>{about.name}</h1>
+    <p class="hero-subtitle">{about.title}</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">{t.hero.primary}</a>
+      <a class="btn btn-ghost" href={cvUrl}>{t.hero.secondary}</a>
+    </div>
+  </div>
+  <a class="scroll-hint" href="#about" aria-label={t.hero.scroll}>↓</a>
+</section>

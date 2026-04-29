@@ -1,0 +1,22 @@
+---
+import type { Certification } from "../lib/directus";
+
+const { certifications, t } = Astro.props as { certifications: Certification[]; t: any };
+---
+
+<section class="section" id="certifications" data-reveal>
+  <div class="container">
+    <p class="section-label">{t.sections.certifications}</p>
+    <div class="cert-grid">
+      {certifications.map((certification) => (
+        <article class="card cert-card">
+          <div class="cert-icon" aria-hidden="true">🏅</div>
+          <time>{certification.date}</time>
+          <h3>{certification.name}</h3>
+          <p class="organization">{certification.issuer}</p>
+          <p>{certification.detail}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

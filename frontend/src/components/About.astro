@@ -1,0 +1,40 @@
+---
+import { getAssetURL, type About } from "../lib/directus";
+
+const { about, t } = Astro.props as { about: About; t: any };
+const photoUrl = getAssetURL(about.photo);
+---
+
+<section class="section" id="about" data-reveal>
+  <div class="container">
+    <p class="section-label">{t.sections.about}</p>
+    <div class="about-grid">
+      <div class="portrait-frame" aria-label={`Portrait de ${about.name}`}>
+        {
+          photoUrl ? (
+            <img src={photoUrl} alt={`Portrait de ${about.name}`} loading="lazy" />
+          ) : (
+            <div class="portrait-placeholder" role="img" aria-label={`Portrait de ${about.name}`}>
+              <span>MB</span>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="about-copy">
+        <h2>{about.name}</h2>
+        <h3>{about.title}</h3>
+        <p>{about.bio}</p>
+
+        <div class="stats-grid">
+          {t.about.stats.map((stat: { value: string; label: string }) => (
+            <div class="card stat-card">
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

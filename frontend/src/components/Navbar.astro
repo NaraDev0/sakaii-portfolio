@@ -1,0 +1,51 @@
+---
+import LangToggle from "./LangToggle.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const { t, lang } = Astro.props;
+const base = lang === "en" ? "/en" : "";
+const links = [
+  { href: `${base}/#about`, label: t.nav.about },
+  { href: `${base}/#journey`, label: t.nav.journey },
+  { href: `${base}/#projects`, label: t.nav.projects },
+  { href: `${base}/#skills`, label: t.nav.skills },
+  { href: `${base}/#contact`, label: t.nav.contact }
+];
+---
+
+<nav class="nav" aria-label="Navigation principale">
+  <div class="nav-inner">
+    <a class="brand" href={base || "/"}>Mikaël BOUCHET</a>
+
+    <div class="nav-links" id="nav-links">
+      {links.map((link) => <a class="nav-link" href={link.href}>{link.label}</a>)}
+    </div>
+
+    <div class="nav-actions">
+      <LangToggle lang={lang} />
+      <ThemeToggle />
+      <button class="hamburger" id="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label={t.nav.menu}>
+        <span aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  (() => {
+    const button = document.getElementById("menu-toggle");
+    const links = document.getElementById("nav-links");
+
+    button?.addEventListener("click", () => {
+      const isOpen = links?.classList.toggle("is-open") || false;
+      button.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    links?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        links.classList.remove("is-open");
+        button?.setAttribute("aria-expanded", "false");
+      });
+    });
+  })();
+</script>

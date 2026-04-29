@@ -1,0 +1,32 @@
+---
+import type { Experience } from "../lib/directus";
+
+const { experiences, t } = Astro.props as { experiences: Experience[]; t: any };
+const items = experiences.filter((item) => item.type === "experience");
+---
+
+<section class="section" id="journey" data-reveal>
+  <div class="container">
+    <p class="section-label">{t.sections.journey}</p>
+    <div class="journey-head">
+      <h3>{t.sections.experience}</h3>
+      <p class="muted">Carpe Diem IT · Sakaii Project · Le Singe du Numérique</p>
+    </div>
+
+    <div class="timeline">
+      {items.map((item) => (
+        <article class="timeline-item">
+          <div class="card timeline-card">
+            <span class="period">{item.period}</span>
+            <h4>{item.title}</h4>
+            <p class="organization">{item.organization}</p>
+            <p>{item.description}</p>
+            <div class="tag-list">
+              {item.tags?.map((tag) => <span class="tag">{tag}</span>)}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

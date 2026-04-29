@@ -1,0 +1,91 @@
+---
+const { t } = Astro.props;
+---
+
+<button class="terminal-button" id="terminal-open" type="button" aria-label="Ouvrir le terminal">
+  {t.terminal.button}
+</button>
+
+<div class="terminal-modal" id="terminal-modal" aria-hidden="true">
+  <div class="terminal-window" role="dialog" aria-modal="true" aria-labelledby="terminal-title">
+    <div class="terminal-titlebar">
+      <div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <span id="terminal-title">{t.terminal.title}</span>
+    </div>
+    <div class="terminal-output" id="terminal-output">
+      <div class="terminal-line">{t.terminal.help}</div>
+    </div>
+    <form class="terminal-form" id="terminal-form">
+      <span aria-hidden="true">❯</span>
+      <input id="terminal-input" autocomplete="off" spellcheck="false" aria-label={t.terminal.placeholder} />
+    </form>
+  </div>
+</div>
+
+<script define:vars={{ terminalCommands: t.terminal.commands, terminalUnknown: t.terminal.unknown }}>
+  (() => {
+    if (window.__sakaiiTerminalReady) return;
+    window.__sakaiiTerminalReady = true;
+
+    const openButton = document.getElementById("terminal-open");
+    const modal = document.getElementById("terminal-modal");
+    const form = document.getElementById("terminal-form");
+    const input = document.getElementById("terminal-input");
+    const output = document.getElementById("terminal-output");
+
+    const open = () => {
+      modal?.classList.add("is-open");
+      modal?.setAttribute("aria-hidden", "false");
+      setTimeout(() => input?.focus(), 30);
+    };
+
+    const close = () => {
+      modal?.classList.remove("is-open");
+      modal?.setAttribute("aria-hidden", "true");
+    };
+
+    const appendLine = (text, type = "out") => {
+      const line = document.createElement("div");
+      line.className = `terminal-line ${type}`;
+      line.textContent = text;
+      output?.appendChild(line);
+      output?.scrollTo({ top: output.scrollHeight });
+    };
+
+    openButton?.addEventListener("click", open);
+    modal?.addEventListener("click", (event) => {
+      if (event.target === modal) close();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") close();
+    });
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const raw = input?.value.trim() || "";
+      const command = raw.toLowerCase();
+      if (!raw) return;
+
+      appendLine(`❯ ${raw}`, "prompt");
+      if (input) input.value = "";
+
+      if (command === "clear") {
+        if (output) output.innerHTML = "";
+        return;
+      }
+
+      if (command === "exit") {
+        close();
+        return;
+      }
+
+      const response = terminalCommands[command];
+      if (response) {
+        appendLine(response, command === "sudo" ? "error" : "out");
+      } else {
+        appendLine(terminalUnknown.replace("{cmd}", raw), "error");
+      }
+    });
+  })();
+</script>

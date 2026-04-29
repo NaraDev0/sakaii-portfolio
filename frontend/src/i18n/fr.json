@@ -1,0 +1,81 @@
+{
+  "nav": {
+    "about": "À propos",
+    "journey": "Parcours",
+    "projects": "Projets",
+    "skills": "Compétences",
+    "contact": "Contact",
+    "menu": "Menu"
+  },
+  "hero": {
+    "tagline": "Technicien réseau · Homelab · Self-hosted",
+    "primary": "Découvrir mes projets",
+    "secondary": "Télécharger mon CV",
+    "scroll": "Défiler"
+  },
+  "sections": {
+    "about": "01 — À propos",
+    "journey": "02 — Parcours professionnel",
+    "experience": "Expériences",
+    "formation": "Formation",
+    "projects": "03 — Projets",
+    "skills": "04 — Compétences",
+    "certifications": "05 — Certifications"
+  },
+  "about": {
+    "stats": [
+      { "value": "7+", "label": "Projets" },
+      { "value": "1+", "label": "An d'XP pro" },
+      { "value": "∞", "label": "Containers" }
+    ]
+  },
+  "projects": {
+    "filters": {
+      "all": "Tous",
+      "pro": "Pro",
+      "perso": "Perso",
+      "asso": "Asso",
+      "ecole": "École"
+    },
+    "featured": "★ Mis en avant"
+  },
+  "status": {
+    "termine": "Terminé",
+    "en_cours": "En cours",
+    "en_pause": "En pause"
+  },
+  "categories": {
+    "pro": "Pro",
+    "perso": "Perso",
+    "asso": "Asso",
+    "ecole": "École"
+  },
+  "contact": {
+    "title": "Envie d'échanger ?",
+    "subtitle": "N'hésitez pas à me contacter",
+    "instagram": "Instagram",
+    "cv": "Télécharger mon CV"
+  },
+  "footer": {
+    "copyright": "© 2026 Mikaël Bouchet — sakaii.org",
+    "hosting": "Hébergé avec fierté sur Proxmox 🖥️"
+  },
+  "terminal": {
+    "title": "mikael@sakaii ~ %",
+    "button": "❯_",
+    "placeholder": "Commande",
+    "help": "Commandes : help, about, skills, contact, stack, ls, whoami, neofetch, sudo, clear, exit",
+    "unknown": "commande introuvable : {cmd} — tape 'help'",
+    "commands": {
+      "help": "Commandes : help, about, skills, contact, stack, ls, whoami, neofetch, sudo, clear, exit",
+      "about": "Mikael Bouchet — Sysadmin, homelabber. Passionné par l'infra self-hosted.",
+      "skills": "Proxmox · Docker · Stormshield · Omada · M365 · AD · Windows Server · Fedora · Beemo",
+      "contact": "→ Instagram : @mikael_bch · GitHub : NaraDev0",
+      "stack": "Proxmox VE → LXC/Docker → Cloudflare Tunnel → sakaii.org",
+      "ls": "sakaii+/ nextcloud/ vaultwarden/ singe-du-numerique/ cv.pdf README.md",
+      "whoami": "mikael@sakaii",
+      "neofetch": "sakaii@proxmox — uptime: ∞ — containers: on en rajoute chaque semaine",
+      "sudo": "Permission denied. Nice try. 😏"
+    }
+  }
+}

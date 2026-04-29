@@ -1,0 +1,18 @@
+---
+const { lang } = Astro.props;
+const isEnglish = lang === "en";
+const target = isEnglish ? "/" : "/en/";
+---
+
+<a class="lang-toggle" href={target} data-lang-target={isEnglish ? "fr" : "en"} aria-label="Changer de langue">
+  <span aria-current={isEnglish ? "false" : "true"}>FR</span>
+  <span aria-current={isEnglish ? "true" : "false"}>EN</span>
+</a>
+
+<script is:inline>
+  document.querySelectorAll("[data-lang-target]").forEach((link) => {
+    link.addEventListener("click", () => {
+      localStorage.setItem("sakaii-lang", link.getAttribute("data-lang-target") || "fr");
+    });
+  });
+</script>

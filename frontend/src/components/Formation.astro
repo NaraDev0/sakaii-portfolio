@@ -1,0 +1,24 @@
+---
+import type { Experience } from "../lib/directus";
+
+const { experiences, t } = Astro.props as { experiences: Experience[]; t: any };
+const formations = experiences.filter((item) => item.type === "formation");
+---
+
+<div class="container formation-head" data-reveal>
+  <h3>{t.sections.formation}</h3>
+  <div class="formation-grid">
+    {formations.map((item) => (
+      <article class="card formation-card">
+        <div class="formation-icon" aria-hidden="true">{item.icon || "•"}</div>
+        <span class="period">{item.period}</span>
+        <h4>{item.title}</h4>
+        <p class="organization">{item.organization}</p>
+        <p>{item.description}</p>
+        <div class="tag-list">
+          {item.tags?.map((tag) => <span class="tag">{tag}</span>)}
+        </div>
+      </article>
+    ))}
+  </div>
+</div>

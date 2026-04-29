@@ -1,0 +1,26 @@
+# Environnement
+.env
+
+# Directus data (genere au runtime)
+directus/database/*.db
+directus/database/*.db-*
+directus/uploads/*
+!directus/uploads/.gitkeep
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.astro/
+dist/
+.astro/
+
+# Backups locaux
+backups/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

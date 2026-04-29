@@ -1,0 +1,20 @@
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Changer de thème">
+  <span aria-hidden="true">☀</span>
+  <span aria-hidden="true">☾</span>
+</button>
+
+<script is:inline>
+  (() => {
+    if (window.__sakaiiThemeToggleReady) return;
+    window.__sakaiiThemeToggleReady = true;
+
+    const button = document.getElementById("theme-toggle");
+    const root = document.documentElement;
+
+    button?.addEventListener("click", () => {
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      localStorage.setItem("sakaii-theme", next);
+    });
+  })();
+</script>

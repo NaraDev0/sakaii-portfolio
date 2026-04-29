@@ -1,0 +1,44 @@
+---
+import type { Project } from "../lib/directus";
+import ProjectCard from "./ProjectCard.astro";
+
+const { projects, t } = Astro.props as { projects: Project[]; t: any };
+const filters = ["all", "pro", "perso", "asso", "ecole"] as const;
+---
+
+<section class="section" id="projects" data-reveal>
+  <div class="container">
+    <p class="section-label">{t.sections.projects}</p>
+    <div class="projects-toolbar" aria-label="Filtres projets">
+      {filters.map((filter) => (
+        <button class={`filter-button ${filter === "all" ? "is-active" : ""}`} type="button" data-project-filter={filter}>
+          {t.projects.filters[filter]}
+        </button>
+      ))}
+    </div>
+
+    <div class="projects-grid">
+      {projects.map((project) => <ProjectCard project={project} t={t} />)}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const buttons = document.querySelectorAll("[data-project-filter]");
+    const cards = document.querySelectorAll("[data-project-card]");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.getAttribute("data-project-filter");
+        buttons.forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+
+        cards.forEach((card) => {
+          const category = card.getAttribute("data-category");
+          card.hidden = filter !== "all" && category !== filter;
+        });
+      });
+    });
+  })();
+</script>
