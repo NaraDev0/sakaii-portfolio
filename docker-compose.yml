@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   directus:
-    image: directus/directus:latest
+    image: directus/directus:11
     container_name: sakaii-directus
     restart: unless-stopped
     ports:

@@ -50,7 +50,7 @@ const jsonLd = {
     <meta property="og:url" content={currentUrl} />
     <meta property="og:image" content={`${siteUrl}/favicon.svg`} />
     <meta name="twitter:card" content="summary" />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <Navbar t={t} lang={lang} />

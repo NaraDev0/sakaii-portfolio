@@ -208,6 +208,9 @@ img {
   font-size: 0.92rem;
   font-weight: 800;
   letter-spacing: 0.04em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .nav-links,
@@ -1001,7 +1004,8 @@ img {
   }
 
   .brand {
-    max-width: 130px;
+    max-width: 112px;
+    font-size: 0.82rem;
   }
 
   .nav-actions {

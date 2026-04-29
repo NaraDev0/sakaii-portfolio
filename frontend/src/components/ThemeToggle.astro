@@ -5,11 +5,11 @@
 
 <script is:inline>
   (() => {
-    if (window.__sakaiiThemeToggleReady) return;
-    window.__sakaiiThemeToggleReady = true;
-
     const button = document.getElementById("theme-toggle");
     const root = document.documentElement;
+
+    if (!button || button.dataset.ready === "true") return;
+    button.dataset.ready = "true";
 
     button?.addEventListener("click", () => {
       const next = root.dataset.theme === "dark" ? "light" : "dark";
