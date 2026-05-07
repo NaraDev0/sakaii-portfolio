@@ -31,6 +31,22 @@ run_as_root() {
   fi
 }
 
+run_as_root_env() {
+  local env_name="$1"
+  local env_value="$2"
+  shift 2
+
+  if [ "$(id -u)" -ne 0 ]; then
+    if command -v sudo >/dev/null 2>&1; then
+      sudo env "${env_name}=${env_value}" "$@"
+    else
+      fail "Ce script doit etre lance en root ou avec sudo disponible."
+    fi
+  else
+    env "${env_name}=${env_value}" "$@"
+  fi
+}
+
 require_supported_os() {
   [ -r /etc/os-release ] || fail "Impossible de detecter l'OS."
   . /etc/os-release
@@ -61,10 +77,10 @@ print_specs() {
 install_dependencies() {
   info "Mise a jour des paquets"
   run_as_root apt-get update
-  run_as_root DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+  run_as_root_env DEBIAN_FRONTEND noninteractive apt-get upgrade -y
 
   info "Installation des dependances de base"
-  run_as_root DEBIAN_FRONTEND=noninteractive apt-get install -y curl git ca-certificates gnupg lsb-release openssl
+  run_as_root_env DEBIAN_FRONTEND noninteractive apt-get install -y curl git ca-certificates gnupg lsb-release openssl
 
   if command -v docker >/dev/null 2>&1; then
     success "Docker est deja installe : $(run_as_root docker --version)"
@@ -78,7 +94,7 @@ install_dependencies() {
     success "Docker Compose plugin disponible : $(run_as_root docker compose version)"
   else
     info "Installation du plugin Docker Compose"
-    run_as_root DEBIAN_FRONTEND=noninteractive apt-get install -y docker-compose-plugin
+    run_as_root_env DEBIAN_FRONTEND noninteractive apt-get install -y docker-compose-plugin
     run_as_root docker compose version >/dev/null 2>&1 || fail "Docker Compose plugin introuvable apres installation."
     success "Docker Compose plugin installe : $(run_as_root docker compose version)"
   fi
@@ -88,7 +104,7 @@ install_dependencies() {
   else
     info "Installation de Node.js 20 LTS via NodeSource"
     curl -fsSL https://deb.nodesource.com/setup_20.x | run_as_root bash -
-    run_as_root DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+    run_as_root_env DEBIAN_FRONTEND noninteractive apt-get install -y nodejs
     node -v | grep -Eq '^v20\.' || fail "Node.js 20 attendu, version installee : $(node -v)"
     success "Node.js installe : $(node --version)"
   fi
