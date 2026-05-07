@@ -3,18 +3,19 @@ import { getAssetURL, type About } from "../lib/directus";
 
 const { about, t } = Astro.props as { about: About; t: any };
 const photoUrl = getAssetURL(about.photo);
+const portraitLabel = t.about.portrait.replace("{name}", about.name);
 ---
 
 <section class="section" id="about" data-reveal>
   <div class="container">
     <p class="section-label">{t.sections.about}</p>
     <div class="about-grid">
-      <div class="portrait-frame" aria-label={`Portrait de ${about.name}`}>
+      <div class="portrait-frame" aria-label={portraitLabel}>
         {
           photoUrl ? (
-            <img src={photoUrl} alt={`Portrait de ${about.name}`} loading="lazy" />
+            <img src={photoUrl} alt={portraitLabel} loading="lazy" />
           ) : (
-            <div class="portrait-placeholder" role="img" aria-label={`Portrait de ${about.name}`}>
+            <div class="portrait-placeholder" role="img" aria-label={portraitLabel}>
               <span>MB</span>
             </div>
           )

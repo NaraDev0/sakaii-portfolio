@@ -1,4 +1,9 @@
 {
+  "a11y": {
+    "mainNav": "Main navigation",
+    "changeLanguage": "Change language",
+    "changeTheme": "Change theme"
+  },
   "nav": {
     "about": "About",
     "journey": "Journey",
@@ -11,6 +16,7 @@
     "tagline": "Network technician · Homelab · Self-hosted",
     "primary": "Explore my projects",
     "secondary": "Download my CV",
+    "contact": "Contact me",
     "scroll": "Scroll"
   },
   "sections": {
@@ -23,6 +29,7 @@
     "certifications": "05 — Certifications"
   },
   "about": {
+    "portrait": "Portrait of {name}",
     "stats": [
       { "value": "7+", "label": "Projects" },
       { "value": "1+", "label": "Year pro XP" },
@@ -30,6 +37,8 @@
     ]
   },
   "projects": {
+    "filtersLabel": "Project filters",
+    "coverAlt": "Cover image for {title}",
     "filters": {
       "all": "All",
       "pro": "Pro",
@@ -54,7 +63,8 @@
     "title": "Want to talk?",
     "subtitle": "Feel free to reach out",
     "instagram": "Instagram",
-    "cv": "Download my CV"
+    "cv": "Download my CV",
+    "email": "Send an email"
   },
   "footer": {
     "copyright": "© 2026 Mikaël Bouchet — sakaii.org",
@@ -63,6 +73,7 @@
   "terminal": {
     "title": "mikael@sakaii ~ %",
     "button": "❯_",
+    "open": "Open terminal",
     "placeholder": "Command",
     "help": "Commands: help, about, skills, contact, stack, ls, whoami, neofetch, sudo, clear, exit",
     "unknown": "command not found: {cmd} — type 'help'",

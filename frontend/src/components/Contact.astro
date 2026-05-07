@@ -4,7 +4,7 @@ import { getAssetURL, type About } from "../lib/directus";
 const { about, t } = Astro.props as { about: About; t: any };
 const handle = about.instagram?.replace(/^@/, "") || "mikael_bch";
 const instagramUrl = `https://www.instagram.com/${handle}/`;
-const cvUrl = getAssetURL(about.cv) || `mailto:${about.email}`;
+const cvUrl = getAssetURL(about.cv);
 ---
 
 <section class="section contact-section" id="contact" data-reveal>
@@ -16,7 +16,7 @@ const cvUrl = getAssetURL(about.cv) || `mailto:${about.email}`;
         <a class="btn btn-primary" href={instagramUrl} target="_blank" rel="noreferrer">
           {t.contact.instagram} ({about.instagram})
         </a>
-        <a class="btn btn-ghost" href={cvUrl}>{t.contact.cv}</a>
+        <a class="btn btn-ghost" href={cvUrl || `mailto:${about.email}`}>{cvUrl ? t.contact.cv : t.contact.email}</a>
       </div>
     </div>
   </div>

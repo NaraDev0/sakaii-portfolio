@@ -1,4 +1,9 @@
 {
+  "a11y": {
+    "mainNav": "Navigation principale",
+    "changeLanguage": "Changer de langue",
+    "changeTheme": "Changer de thème"
+  },
   "nav": {
     "about": "À propos",
     "journey": "Parcours",
@@ -11,6 +16,7 @@
     "tagline": "Technicien réseau · Homelab · Self-hosted",
     "primary": "Découvrir mes projets",
     "secondary": "Télécharger mon CV",
+    "contact": "Me contacter",
     "scroll": "Défiler"
   },
   "sections": {
@@ -23,6 +29,7 @@
     "certifications": "05 — Certifications"
   },
   "about": {
+    "portrait": "Portrait de {name}",
     "stats": [
       { "value": "7+", "label": "Projets" },
       { "value": "1+", "label": "An d'XP pro" },
@@ -30,6 +37,8 @@
     ]
   },
   "projects": {
+    "filtersLabel": "Filtres projets",
+    "coverAlt": "Couverture du projet {title}",
     "filters": {
       "all": "Tous",
       "pro": "Pro",
@@ -54,7 +63,8 @@
     "title": "Envie d'échanger ?",
     "subtitle": "N'hésitez pas à me contacter",
     "instagram": "Instagram",
-    "cv": "Télécharger mon CV"
+    "cv": "Télécharger mon CV",
+    "email": "Envoyer un email"
   },
   "footer": {
     "copyright": "© 2026 Mikaël Bouchet — sakaii.org",
@@ -63,6 +73,7 @@
   "terminal": {
     "title": "mikael@sakaii ~ %",
     "button": "❯_",
+    "open": "Ouvrir le terminal",
     "placeholder": "Commande",
     "help": "Commandes : help, about, skills, contact, stack, ls, whoami, neofetch, sudo, clear, exit",
     "unknown": "commande introuvable : {cmd} — tape 'help'",

@@ -6,6 +6,16 @@
     };
 
     onReady(() => {
+      if (!("IntersectionObserver" in window)) {
+        document.querySelectorAll("[data-reveal]").forEach((element) => {
+          element.classList.add("reveal", "is-visible");
+        });
+        document.querySelectorAll("[data-skill-bar]").forEach((bar) => {
+          bar.style.width = bar.getAttribute("data-level") || "0%";
+        });
+        return;
+      }
+
       const revealObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {

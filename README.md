@@ -109,6 +109,8 @@ Copier `.env.example` vers `.env`, ou laisser `deploy.sh` le faire automatiqueme
 | `ADMIN_EMAIL` | Email administrateur Directus |
 | `ADMIN_PASSWORD` | Mot de passe administrateur Directus |
 | `DIRECTUS_URL` | URL Directus cote build/runtime |
+| `SITE_URL` | URL publique du site frontend |
+| `DIRECTUS_PUBLIC_URL` | URL publique de l'admin Directus |
 | `PUBLIC_DIRECTUS_URL` | URL publique utilisee pour les assets Directus |
 
 ## Docker Compose

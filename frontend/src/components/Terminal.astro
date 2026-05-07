@@ -2,7 +2,7 @@
 const { t } = Astro.props;
 ---
 
-<button class="terminal-button" id="terminal-open" type="button" aria-label="Ouvrir le terminal">
+<button class="terminal-button" id="terminal-open" type="button" aria-label={t.terminal.open}>
   {t.terminal.button}
 </button>
 

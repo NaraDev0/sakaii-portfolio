@@ -1,4 +1,8 @@
-<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Changer de thème">
+---
+const { t } = Astro.props;
+---
+
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label={t.a11y.changeTheme}>
   <span aria-hidden="true">☀</span>
   <span aria-hidden="true">☾</span>
 </button>

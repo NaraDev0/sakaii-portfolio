@@ -13,7 +13,7 @@ const links = [
 ];
 ---
 
-<nav class="nav" aria-label="Navigation principale">
+<nav class="nav" aria-label={t.a11y.mainNav}>
   <div class="nav-inner">
     <a class="brand" href={base || "/"}>Mikaël BOUCHET</a>
 
@@ -22,8 +22,8 @@ const links = [
     </div>
 
     <div class="nav-actions">
-      <LangToggle lang={lang} />
-      <ThemeToggle />
+      <LangToggle lang={lang} t={t} />
+      <ThemeToggle t={t} />
       <button class="hamburger" id="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label={t.nav.menu}>
         <span aria-hidden="true">☰</span>
       </button>
@@ -36,6 +36,11 @@ const links = [
     const button = document.getElementById("menu-toggle");
     const links = document.getElementById("nav-links");
 
+    const closeMenu = () => {
+      links?.classList.remove("is-open");
+      button?.setAttribute("aria-expanded", "false");
+    };
+
     button?.addEventListener("click", () => {
       const isOpen = links?.classList.toggle("is-open") || false;
       button.setAttribute("aria-expanded", String(isOpen));
@@ -43,9 +48,12 @@ const links = [
 
     links?.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => {
-        links.classList.remove("is-open");
-        button?.setAttribute("aria-expanded", "false");
+        closeMenu();
       });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeMenu();
     });
   })();
 </script>

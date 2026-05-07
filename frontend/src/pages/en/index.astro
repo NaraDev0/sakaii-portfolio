@@ -9,6 +9,7 @@ import Skills from "../../components/Skills.astro";
 import Timeline from "../../components/Timeline.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getAbout, getCertifications, getExperiences, getProjects, getSettings, getSkills } from "../../lib/directus";
+import { localizeContent } from "../../i18n/content";
 import t from "../../i18n/en.json";
 
 const [about, settings, projects, experiences, skills, certifications] = await Promise.all([
@@ -19,15 +20,17 @@ const [about, settings, projects, experiences, skills, certifications] = await P
   getSkills(),
   getCertifications()
 ]);
+
+const localized = localizeContent("en", { about, settings, projects, experiences, skills, certifications });
 ---
 
-<Layout about={about} settings={settings} t={t} lang="en">
-  <Hero about={about} t={t} />
-  <About about={about} t={t} />
-  <Timeline experiences={experiences} t={t} />
-  <Formation experiences={experiences} t={t} />
-  <Projects projects={projects} t={t} />
-  <Skills skills={skills} t={t} />
-  <Certifications certifications={certifications} t={t} />
-  <Contact about={about} t={t} />
+<Layout about={localized.about} settings={localized.settings} t={t} lang="en">
+  <Hero about={localized.about} t={t} />
+  <About about={localized.about} t={t} />
+  <Timeline experiences={localized.experiences} t={t} />
+  <Formation experiences={localized.experiences} t={t} />
+  <Projects projects={localized.projects} t={t} />
+  <Skills skills={localized.skills} t={t} />
+  <Certifications certifications={localized.certifications} t={t} />
+  <Contact about={localized.about} t={t} />
 </Layout>

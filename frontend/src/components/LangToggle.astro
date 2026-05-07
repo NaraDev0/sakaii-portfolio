@@ -1,10 +1,10 @@
 ---
-const { lang } = Astro.props;
+const { lang, t } = Astro.props;
 const isEnglish = lang === "en";
 const target = isEnglish ? "/" : "/en/";
 ---
 
-<a class="lang-toggle" href={target} data-lang-target={isEnglish ? "fr" : "en"} aria-label="Changer de langue">
+<a class="lang-toggle" href={target} data-lang-target={isEnglish ? "fr" : "en"} aria-label={t.a11y.changeLanguage}>
   <span aria-current={isEnglish ? "false" : "true"}>FR</span>
   <span aria-current={isEnglish ? "true" : "false"}>EN</span>
 </a>

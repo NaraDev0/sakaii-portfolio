@@ -9,9 +9,14 @@ const filters = ["all", "pro", "perso", "asso", "ecole"] as const;
 <section class="section" id="projects" data-reveal>
   <div class="container">
     <p class="section-label">{t.sections.projects}</p>
-    <div class="projects-toolbar" aria-label="Filtres projets">
+    <div class="projects-toolbar" aria-label={t.projects.filtersLabel}>
       {filters.map((filter) => (
-        <button class={`filter-button ${filter === "all" ? "is-active" : ""}`} type="button" data-project-filter={filter}>
+        <button
+          class={`filter-button ${filter === "all" ? "is-active" : ""}`}
+          type="button"
+          data-project-filter={filter}
+          aria-pressed={filter === "all" ? "true" : "false"}
+        >
           {t.projects.filters[filter]}
         </button>
       ))}
@@ -31,8 +36,12 @@ const filters = ["all", "pro", "perso", "asso", "ecole"] as const;
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
         const filter = button.getAttribute("data-project-filter");
-        buttons.forEach((item) => item.classList.remove("is-active"));
+        buttons.forEach((item) => {
+          item.classList.remove("is-active");
+          item.setAttribute("aria-pressed", "false");
+        });
         button.classList.add("is-active");
+        button.setAttribute("aria-pressed", "true");
 
         cards.forEach((card) => {
           const category = card.getAttribute("data-category");

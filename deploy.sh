@@ -4,6 +4,8 @@ set -euo pipefail
 REPO_URL="${REPO_URL:-https://github.com/NaraDev0/sakaii-portfolio.git}"
 REPO_DIR="${REPO_DIR:-sakaii-portfolio}"
 ADMIN_EMAIL_DEFAULT="${ADMIN_EMAIL_DEFAULT:-mikael@sakaii.org}"
+SITE_URL_DEFAULT="${SITE_URL_DEFAULT:-https://sakaii.org}"
+DIRECTUS_PUBLIC_URL_DEFAULT="${DIRECTUS_PUBLIC_URL_DEFAULT:-https://admin.sakaii.org}"
 DIRECTUS_HEALTH_URL="${DIRECTUS_HEALTH_URL:-http://localhost:8055/server/health}"
 
 BLUE="\033[0;34m"
@@ -13,9 +15,9 @@ YELLOW="\033[1;33m"
 NC="\033[0m"
 
 info() { echo -e "${BLUE}==>${NC} $*"; }
-success() { echo -e "${GREEN}✅ $*${NC}"; }
-warn() { echo -e "${YELLOW}⚠️  $*${NC}"; }
-fail() { echo -e "${RED}❌ $*${NC}" >&2; exit 1; }
+success() { echo -e "${GREEN}[OK] $*${NC}"; }
+warn() { echo -e "${YELLOW}[WARN] $*${NC}"; }
+fail() { echo -e "${RED}[ERROR] $*${NC}" >&2; exit 1; }
 
 run_as_root() {
   if [ "$(id -u)" -ne 0 ]; then
@@ -122,12 +124,18 @@ configure_env() {
   [ -f ".env.example" ] || fail ".env.example introuvable."
   cp .env.example .env
 
-  local key secret admin_email admin_password generated_password
+  local key secret admin_email admin_password generated_password site_url directus_public_url
   key="$(openssl rand -hex 32)"
   secret="$(openssl rand -hex 32)"
 
   read -r -p "Email admin Directus [$ADMIN_EMAIL_DEFAULT] : " admin_email
   admin_email="${admin_email:-$ADMIN_EMAIL_DEFAULT}"
+
+  read -r -p "URL publique du site [$SITE_URL_DEFAULT] : " site_url
+  site_url="${site_url:-$SITE_URL_DEFAULT}"
+
+  read -r -p "URL publique de Directus [$DIRECTUS_PUBLIC_URL_DEFAULT] : " directus_public_url
+  directus_public_url="${directus_public_url:-$DIRECTUS_PUBLIC_URL_DEFAULT}"
 
   generated_password="$(openssl rand -base64 18 | tr -d '=+/[:space:]' | cut -c1-20)"
   read -r -s -p "Mot de passe admin Directus [generer automatiquement] : " admin_password
@@ -138,11 +146,16 @@ configure_env() {
   sed -i "s|^DIRECTUS_SECRET=.*|DIRECTUS_SECRET=$secret|" .env
   sed -i "s|^ADMIN_EMAIL=.*|ADMIN_EMAIL=$admin_email|" .env
   sed -i "s|^ADMIN_PASSWORD=.*|ADMIN_PASSWORD=$admin_password|" .env
+  sed -i "s|^SITE_URL=.*|SITE_URL=$site_url|" .env
+  sed -i "s|^DIRECTUS_PUBLIC_URL=.*|DIRECTUS_PUBLIC_URL=$directus_public_url|" .env
+  sed -i "s|^PUBLIC_DIRECTUS_URL=.*|PUBLIC_DIRECTUS_URL=$directus_public_url|" .env
 
   success ".env cree avec des secrets uniques."
   echo ""
-  echo "  📧 Email admin : $admin_email"
-  echo "  🔑 Mot de passe : $admin_password"
+  echo "  Email admin      : $admin_email"
+  echo "  Mot de passe     : $admin_password"
+  echo "  URL site         : $site_url"
+  echo "  URL Directus     : $directus_public_url"
   echo ""
   warn "Notez ces identifiants maintenant."
 }
@@ -183,24 +196,26 @@ run_seed() {
 }
 
 final_summary() {
-  local admin_email admin_password
+  local admin_email admin_password site_url directus_public_url
   admin_email="$(grep -E '^ADMIN_EMAIL=' .env | cut -d= -f2-)"
   admin_password="$(grep -E '^ADMIN_PASSWORD=' .env | cut -d= -f2-)"
+  site_url="$(grep -E '^SITE_URL=' .env | cut -d= -f2-)"
+  directus_public_url="$(grep -E '^DIRECTUS_PUBLIC_URL=' .env | cut -d= -f2-)"
 
   echo ""
   echo "============================================"
-  echo "  ✅ Deploiement termine avec succes !"
+  echo "  Deploiement termine avec succes"
   echo "============================================"
   echo ""
-  echo "  🌐 Site      : http://localhost:4321"
-  echo "  ⚙️  Admin     : http://localhost:8055"
+  echo "  Site local      : http://localhost:4321"
+  echo "  Admin local     : http://localhost:8055"
   echo ""
-  echo "  Apres configuration du Cloudflare Tunnel :"
-  echo "  🌐 Site      : https://sakaii.org"
-  echo "  ⚙️  Admin     : https://admin.sakaii.org"
+  echo "  URLs publiques :"
+  echo "  Site            : ${site_url:-non configure}"
+  echo "  Admin           : ${directus_public_url:-non configure}"
   echo ""
-  echo "  📧 Email admin : $admin_email"
-  echo "  🔑 Mot de passe : $admin_password"
+  echo "  Email admin     : $admin_email"
+  echo "  Mot de passe    : $admin_password"
   echo ""
   echo "  Commandes utiles :"
   echo "  - Voir les logs    : docker compose logs -f"
@@ -211,7 +226,7 @@ final_summary() {
 }
 
 echo "============================================"
-echo "  🚀 Deploiement Sakaii Portfolio"
+echo "  Deploiement Sakaii Portfolio"
 echo "  sakaii.org - Mikael Bouchet"
 echo "============================================"
 echo ""

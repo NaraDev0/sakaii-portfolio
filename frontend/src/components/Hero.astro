@@ -2,7 +2,7 @@
 import { getAssetURL, type About } from "../lib/directus";
 
 const { about, t } = Astro.props as { about: About; t: any };
-const cvUrl = getAssetURL(about.cv) || "#contact";
+const cvUrl = getAssetURL(about.cv);
 ---
 
 <section class="hero" id="top">
@@ -12,7 +12,7 @@ const cvUrl = getAssetURL(about.cv) || "#contact";
     <p class="hero-subtitle">{about.title}</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#projects">{t.hero.primary}</a>
-      <a class="btn btn-ghost" href={cvUrl}>{t.hero.secondary}</a>
+      <a class="btn btn-ghost" href={cvUrl || "#contact"}>{cvUrl ? t.hero.secondary : t.hero.contact}</a>
     </div>
   </div>
   <a class="scroll-hint" href="#about" aria-label={t.hero.scroll}>↓</a>

@@ -9,10 +9,10 @@ run_as_root() {
   fi
 }
 
-echo "🔄 Mise a jour Sakaii Portfolio..."
+echo "Mise a jour Sakaii Portfolio..."
 
 git pull origin main
 run_as_root docker compose up -d --build
 
-echo "✅ Mise a jour terminee !"
-echo "💡 Si le schema Directus a change, relancez : DIRECTUS_URL=http://localhost:8055 node seed.mjs"
+echo "Mise a jour terminee."
+echo "Si le schema Directus a change, relancez : DIRECTUS_URL=http://localhost:8055 node seed.mjs"

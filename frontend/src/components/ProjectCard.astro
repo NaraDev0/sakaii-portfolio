@@ -4,11 +4,12 @@ import { getAssetURL, type Project } from "../lib/directus";
 const { project, t } = Astro.props as { project: Project; t: any };
 const coverUrl = getAssetURL(project.cover);
 const statusClass = `status status-${project.status}`;
+const coverAlt = t.projects.coverAlt.replace("{title}", project.title);
 ---
 
 <article class="card project-card" data-project-card data-category={project.category}>
   <div class="project-cover">
-    {coverUrl && <img src={coverUrl} alt={`Couverture du projet ${project.title}`} loading="lazy" />}
+    {coverUrl && <img src={coverUrl} alt={coverAlt} loading="lazy" />}
     {project.featured && <span class="featured-badge">{t.projects.featured}</span>}
   </div>
 
