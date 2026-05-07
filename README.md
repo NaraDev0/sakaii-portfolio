@@ -108,6 +108,7 @@ Copier `.env.example` vers `.env`, ou laisser `deploy.sh` le faire automatiqueme
 | `DIRECTUS_SECRET` | Secret Directus |
 | `ADMIN_EMAIL` | Email administrateur Directus |
 | `ADMIN_PASSWORD` | Mot de passe administrateur Directus |
+| `ADMIN_TOKEN` | Token API admin utilise pour le seed/bootstrap |
 | `DIRECTUS_URL` | URL Directus cote build/runtime |
 | `SITE_URL` | URL publique du site frontend |
 | `DIRECTUS_PUBLIC_URL` | URL publique de l'admin Directus |

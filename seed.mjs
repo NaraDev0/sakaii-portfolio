@@ -5,6 +5,7 @@ const env = await loadEnv();
 const DIRECTUS_URL = process.env.DIRECTUS_URL || env.DIRECTUS_URL || "http://localhost:8055";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || env.ADMIN_EMAIL || "mikael@sakaii.org";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || env.ADMIN_PASSWORD || "ChangeMePlease!";
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || env.ADMIN_TOKEN || "";
 
 let accessToken = "";
 
@@ -105,7 +106,7 @@ await main();
 async function main() {
   console.log(`Connexion à Directus : ${DIRECTUS_URL}`);
   await waitForDirectus();
-  accessToken = await login();
+  accessToken = ADMIN_TOKEN || (await login());
 
   for (const collection of collections) {
     await ensureCollection(collection);
@@ -162,7 +163,12 @@ async function login() {
     body: { email: ADMIN_EMAIL, password: ADMIN_PASSWORD }
   });
 
-  return json.data?.access_token;
+  const token = json.data?.access_token;
+  if (!token) {
+    throw new Error("Connexion Directus reussie sans access_token. Configure ADMIN_TOKEN ou verifie les identifiants admin.");
+  }
+
+  return token;
 }
 
 async function ensureCollection(collection) {

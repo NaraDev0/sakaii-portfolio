@@ -133,6 +133,7 @@ clone_or_update_repo() {
 
 configure_env() {
   if [ -f ".env" ]; then
+    ensure_existing_env
     success ".env existe deja, il ne sera pas ecrase."
     return
   fi
@@ -140,9 +141,10 @@ configure_env() {
   [ -f ".env.example" ] || fail ".env.example introuvable."
   cp .env.example .env
 
-  local key secret admin_email admin_password generated_password site_url directus_public_url
+  local key secret admin_email admin_password generated_password site_url directus_public_url admin_token
   key="$(openssl rand -hex 32)"
   secret="$(openssl rand -hex 32)"
+  admin_token="$(openssl rand -hex 32)"
 
   read -r -p "Email admin Directus [$ADMIN_EMAIL_DEFAULT] : " admin_email
   admin_email="${admin_email:-$ADMIN_EMAIL_DEFAULT}"
@@ -162,6 +164,7 @@ configure_env() {
   sed -i "s|^DIRECTUS_SECRET=.*|DIRECTUS_SECRET=$secret|" .env
   sed -i "s|^ADMIN_EMAIL=.*|ADMIN_EMAIL=$admin_email|" .env
   sed -i "s|^ADMIN_PASSWORD=.*|ADMIN_PASSWORD=$admin_password|" .env
+  sed -i "s|^ADMIN_TOKEN=.*|ADMIN_TOKEN=$admin_token|" .env
   sed -i "s|^SITE_URL=.*|SITE_URL=$site_url|" .env
   sed -i "s|^DIRECTUS_PUBLIC_URL=.*|DIRECTUS_PUBLIC_URL=$directus_public_url|" .env
   sed -i "s|^PUBLIC_DIRECTUS_URL=.*|PUBLIC_DIRECTUS_URL=$directus_public_url|" .env
@@ -174,6 +177,36 @@ configure_env() {
   echo "  URL Directus     : $directus_public_url"
   echo ""
   warn "Notez ces identifiants maintenant."
+}
+
+ensure_existing_env() {
+  local changed=0
+
+  if ! grep -q '^ADMIN_TOKEN=' .env; then
+    echo "ADMIN_TOKEN=$(openssl rand -hex 32)" >> .env
+    changed=1
+  fi
+
+  if ! grep -q '^SITE_URL=' .env; then
+    echo "SITE_URL=$SITE_URL_DEFAULT" >> .env
+    changed=1
+  fi
+
+  if ! grep -q '^DIRECTUS_PUBLIC_URL=' .env; then
+    echo "DIRECTUS_PUBLIC_URL=$DIRECTUS_PUBLIC_URL_DEFAULT" >> .env
+    changed=1
+  fi
+
+  if ! grep -q '^PUBLIC_DIRECTUS_URL=' .env; then
+    local current_directus_public_url
+    current_directus_public_url="$(grep -E '^DIRECTUS_PUBLIC_URL=' .env | cut -d= -f2- || true)"
+    echo "PUBLIC_DIRECTUS_URL=${current_directus_public_url:-$DIRECTUS_PUBLIC_URL_DEFAULT}" >> .env
+    changed=1
+  fi
+
+  if [ "$changed" -eq 1 ]; then
+    success ".env complete avec les variables manquantes."
+  fi
 }
 
 create_runtime_dirs() {

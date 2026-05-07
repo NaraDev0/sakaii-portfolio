@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   directus:
     image: directus/directus:11
@@ -14,6 +12,7 @@ services:
     environment:
       KEY: "${DIRECTUS_KEY}"
       SECRET: "${DIRECTUS_SECRET}"
+      ADMIN_TOKEN: "${ADMIN_TOKEN}"
       DB_CLIENT: "sqlite3"
       DB_FILENAME: "/directus/database/data.db"
       ADMIN_EMAIL: "${ADMIN_EMAIL}"
@@ -42,6 +41,7 @@ services:
       DIRECTUS_URL: "http://directus:8055"
       ADMIN_EMAIL: "${ADMIN_EMAIL}"
       ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+      ADMIN_TOKEN: "${ADMIN_TOKEN}"
     depends_on:
       directus:
         condition: service_healthy
