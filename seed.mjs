@@ -106,7 +106,7 @@ await main();
 async function main() {
   console.log(`Connexion à Directus : ${DIRECTUS_URL}`);
   await waitForDirectus();
-  accessToken = ADMIN_TOKEN || (await login());
+  accessToken = await getAccessToken();
 
   for (const collection of collections) {
     await ensureCollection(collection);
@@ -155,6 +155,21 @@ async function waitForDirectus() {
   }
 
   throw new Error("Directus n'a pas répondu sur /server/health après 120 secondes.");
+}
+
+async function getAccessToken() {
+  if (ADMIN_EMAIL && ADMIN_PASSWORD) {
+    try {
+      return await login();
+    } catch (error) {
+      if (!ADMIN_TOKEN) throw error;
+      console.warn(`Login admin impossible, tentative avec ADMIN_TOKEN: ${error.message}`);
+    }
+  }
+
+  if (ADMIN_TOKEN) return ADMIN_TOKEN;
+
+  throw new Error("Aucun acces admin disponible pour le seed. Configure ADMIN_EMAIL/ADMIN_PASSWORD ou ADMIN_TOKEN.");
 }
 
 async function login() {
